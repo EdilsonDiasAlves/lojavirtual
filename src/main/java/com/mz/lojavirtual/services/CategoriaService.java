@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mz.lojavirtual.domain.Categoria;
 import com.mz.lojavirtual.repositories.CategoriaRepository;
+import com.mz.lojavirtual.services.exceptions.ObjectNotFoudException;
 
 @Service
 public class CategoriaService {
@@ -16,6 +17,7 @@ public class CategoriaService {
 
 	public Categoria buscarPorId(Integer id) {
 		Optional<Categoria> obj = categoriaRepo.findById(id);
-		return obj.orElse(null);
+		return obj.orElseThrow(() -> new ObjectNotFoudException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 }
