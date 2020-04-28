@@ -13,6 +13,7 @@ import com.mz.lojavirtual.domain.Cidade;
 import com.mz.lojavirtual.domain.Cliente;
 import com.mz.lojavirtual.domain.Endereco;
 import com.mz.lojavirtual.domain.Estado;
+import com.mz.lojavirtual.domain.ItemPedido;
 import com.mz.lojavirtual.domain.Pagamento;
 import com.mz.lojavirtual.domain.PagamentoComBoleto;
 import com.mz.lojavirtual.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.mz.lojavirtual.repositories.CidadeRepository;
 import com.mz.lojavirtual.repositories.ClienteRepository;
 import com.mz.lojavirtual.repositories.EnderecoRepository;
 import com.mz.lojavirtual.repositories.EstadoRepository;
+import com.mz.lojavirtual.repositories.ItemPedidoRepository;
 import com.mz.lojavirtual.repositories.PagamentoRepository;
 import com.mz.lojavirtual.repositories.PedidoRepository;
 import com.mz.lojavirtual.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class LojaVirtualApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepo;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LojaVirtualApplication.class, args);
@@ -124,6 +129,19 @@ public class LojaVirtualApplication implements CommandLineRunner {
 		pedidoRepo.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepo.saveAll(Arrays.asList(pagto1, pagto2));
 		
+		// Massa de dados para itens de pedido
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+
+		itemPedidoRepo.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 
 }
