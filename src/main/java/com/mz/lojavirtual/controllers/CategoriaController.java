@@ -22,8 +22,8 @@ public class CategoriaController {
 	private CategoriaService categoriaService;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<Categoria> findById(@PathVariable Integer id) {
-		Categoria categoria = categoriaService.findById(id);
+	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
+		Categoria categoria = categoriaService.find(id);
 		return ResponseEntity.ok().body(categoria);
 	}
 	
@@ -41,4 +41,10 @@ public class CategoriaController {
 		categoria = categoriaService.update(categoria);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		categoriaService.delete(id);
+		return ResponseEntity.noContent().build();
+	}	
 }
