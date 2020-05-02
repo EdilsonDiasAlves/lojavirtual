@@ -1,5 +1,6 @@
 package com.mz.lojavirtual.controllers;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mz.lojavirtual.domain.Cliente;
+import com.mz.lojavirtual.dto.ClienteCadastroDTO;
 import com.mz.lojavirtual.dto.ClienteDTO;
 import com.mz.lojavirtual.services.ClienteService;
 
@@ -30,6 +33,15 @@ public class ClienteController {
 	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
 		Cliente cliente = clienteService.find(id);
 		return ResponseEntity.ok().body(cliente);
+	}
+	
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteCadastroDTO cliCadDTO) {
+		Cliente cliente = clienteService.fromDTO(cliCadDTO);
+		cliente = clienteService.insert(cliente);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(cliente.getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
