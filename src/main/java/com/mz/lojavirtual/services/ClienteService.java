@@ -1,6 +1,5 @@
 package com.mz.lojavirtual.services;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +57,7 @@ public class ClienteService {
 		try {
 			clienteRepo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possível excluir um cliente com entidades relacionadas");
+			throw new DataIntegrityException("Não é possível excluir um cliente com pedidos relacionadas");
 		}
 	}
 
