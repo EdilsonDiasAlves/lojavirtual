@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mz.lojavirtual.domain.ItemPedido;
 import com.mz.lojavirtual.domain.PagamentoComBoleto;
@@ -32,6 +33,9 @@ public class PedidoService {
 	
 	@Autowired
 	private BoletoService boletoService;
+	
+	@Autowired
+	private ClienteService clienteService;
 
 	public Pedido find(Integer id) {
 		Optional<Pedido> obj = pedidoRepo.findById(id);
@@ -39,9 +43,11 @@ public class PedidoService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
 	}
 
+	@Transactional
 	public Pedido insert(Pedido pedido) {
 		pedido.setId(null);
 		pedido.setInstante(new Date());
+		pedido.setCliente(clienteService.find(pedido.getCliente().getId()));
 		pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		pedido.getPagamento().setPedido(pedido); 
 		
@@ -54,13 +60,14 @@ public class PedidoService {
 		pagamentoRepo.save(pedido.getPagamento());
 		
 		for (ItemPedido item : pedido.getItens()) {
+			item.setProduto(produtoService.find(item.getProduto().getId()));
 			item.setDesconto(0.0);
-			item.setPreco(produtoService.find(item.getProduto().getId()).getPreco());
+			item.setPreco(item.getProduto().getPreco());
 			item.setPedido(pedido);
 		}
 		
 		itemPedidoRepo.saveAll(pedido.getItens());
-		
+		System.out.println(pedido);
 		return pedido;
 	}
 }
