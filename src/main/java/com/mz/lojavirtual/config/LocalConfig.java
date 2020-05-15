@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.mz.lojavirtual.services.DBService;
+import com.mz.lojavirtual.services.EmailService;
+import com.mz.lojavirtual.services.MockEmailService;
 
 @Configuration
 @Profile("local")
@@ -20,6 +22,11 @@ public class LocalConfig {
 	public boolean initDatabase() throws ParseException {
 		dbService.initializeLocalDatabase();
 		return true;
+	}
+	
+	@Bean
+	public EmailService emailService() {
+		return new MockEmailService();
 	}
 
 }
