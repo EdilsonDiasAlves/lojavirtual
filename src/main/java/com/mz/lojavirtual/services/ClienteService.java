@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mz.lojavirtual.domain.Cidade;
@@ -31,6 +32,9 @@ public class ClienteService {
 	
 	@Autowired
 	private EnderecoRepository enderecoRepo;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	public Cliente find(Integer id) {
 		Optional<Cliente> cliente = clienteRepo.findById(id);
@@ -71,12 +75,12 @@ public class ClienteService {
 	}
 	
 	public Cliente fromDTO(ClienteDTO clienteDTO) {
-		return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null);
+		return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null, null);
 	}
 	
 	public Cliente fromDTO(ClienteCadastroDTO cliCadDto) {
 		Cliente cli = new Cliente(null, cliCadDto.getNome(), cliCadDto.getEmail(), 
-				cliCadDto.getCpfOuCnpj(), TipoCliente.toEnum(cliCadDto.getTipo()));
+				cliCadDto.getCpfOuCnpj(), TipoCliente.toEnum(cliCadDto.getTipo()), passwordEncoder.encode(cliCadDto.getSenha()));
 		Cidade cid = new Cidade(cliCadDto.getCidadeId(), null, null);
 		Endereco end = new Endereco(null, cliCadDto.getLogradouro(), cliCadDto.getNumero(), 
 				cliCadDto.getComplemento(), cliCadDto.getBairro(), cliCadDto.getCep(), cli, cid);
