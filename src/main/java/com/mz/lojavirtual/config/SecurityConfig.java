@@ -14,9 +14,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.mz.lojavirtual.security.JWTAuthenticationFilter;
 import com.mz.lojavirtual.security.JWTAuthorizationFilter;
@@ -53,7 +55,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			http.headers().frameOptions().disable();
 		}
 		
+		// Corrigindo encoding durante as requisicoes
+		CharacterEncodingFilter filter = new CharacterEncodingFilter(); 
+		filter.setEncoding("UTF-8"); 
+		filter.setForceEncoding(true); 
+		http.addFilterBefore(filter, CsrfFilter.class);
+		
+		// Desabilitando seguranca contra ataques CSRF (Aplicacao sendo stateless nao ha necessidade)
 		http.cors().and().csrf().disable();
+		
+		// Configurando permissao para rotas especificas e filtros de autenticacao e autorizacao
 		http.authorizeRequests()
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
