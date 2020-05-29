@@ -16,11 +16,14 @@ import org.springframework.stereotype.Service;
 import com.mz.lojavirtual.domain.Cidade;
 import com.mz.lojavirtual.domain.Cliente;
 import com.mz.lojavirtual.domain.Endereco;
+import com.mz.lojavirtual.domain.enums.Perfil;
 import com.mz.lojavirtual.domain.enums.TipoCliente;
 import com.mz.lojavirtual.dto.ClienteCadastroDTO;
 import com.mz.lojavirtual.dto.ClienteDTO;
 import com.mz.lojavirtual.repositories.ClienteRepository;
 import com.mz.lojavirtual.repositories.EnderecoRepository;
+import com.mz.lojavirtual.security.UserDetailsImpl;
+import com.mz.lojavirtual.services.exceptions.AuthorizationException;
 import com.mz.lojavirtual.services.exceptions.DataIntegrityException;
 import com.mz.lojavirtual.services.exceptions.ObjectNotFoudException;
 
@@ -37,6 +40,12 @@ public class ClienteService {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	public Cliente find(Integer id) {
+		
+		UserDetailsImpl user = UserService.getAuthenticated();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso Negado");
+		}
+		
 		Optional<Cliente> cliente = clienteRepo.findById(id);
 		return cliente.orElseThrow(() -> new ObjectNotFoudException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));

@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.mz.lojavirtual.services.exceptions.AuthorizationException;
 import com.mz.lojavirtual.services.exceptions.DataIntegrityException;
 import com.mz.lojavirtual.services.exceptions.ObjectNotFoudException;
 
@@ -35,6 +36,12 @@ public class ControllerExceptionHandler {
 			validationError.addError(fieldError.getField(), fieldError.getDefaultMessage());
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationError);
+	}
+	
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request) {
+		StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 	}
 	
 }
