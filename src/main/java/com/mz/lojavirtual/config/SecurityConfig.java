@@ -49,8 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	};
 	
 	private final String[] PUBLIC_MATCHERS_POST = {
-			"/clientes/**"
-		};
+		"/clientes/**",
+		"/auth/forgot/**"
+	};
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -71,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		// Configurando permissao para rotas especificas e filtros de autenticacao e autorizacao
 		http.authorizeRequests()
-			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_POST).permitAll()
+			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().authenticated();
