@@ -1,5 +1,6 @@
 package com.mz.lojavirtual.services;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mz.lojavirtual.domain.Cidade;
 import com.mz.lojavirtual.domain.Cliente;
@@ -38,6 +40,9 @@ public class ClienteService {
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private S3Service s3Service;
 
 	public Cliente find(Integer id) {
 		
@@ -110,5 +115,9 @@ public class ClienteService {
 	private void updateData(Cliente novoCliente, Cliente cliente) {
 		novoCliente.setNome(cliente.getNome());
 		novoCliente.setEmail(cliente.getEmail());
+	}
+	
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return s3Service.uploadFile(multipartFile);
 	}
 }
