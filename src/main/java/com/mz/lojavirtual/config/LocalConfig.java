@@ -12,7 +12,7 @@ import com.mz.lojavirtual.services.EmailService;
 import com.mz.lojavirtual.services.MockEmailService;
 
 @Configuration
-@Profile("local")
+@Profile({"local", "tomcat"})
 public class LocalConfig {
 	
 	@Autowired
