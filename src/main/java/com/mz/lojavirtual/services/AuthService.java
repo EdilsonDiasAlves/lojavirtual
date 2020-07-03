@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mz.lojavirtual.domain.Cliente;
 import com.mz.lojavirtual.repositories.ClienteRepository;
-import com.mz.lojavirtual.services.exceptions.ObjectNotFoudException;
+import com.mz.lojavirtual.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class AuthService {
@@ -28,7 +28,7 @@ public class AuthService {
 		
 		Cliente cliente = clienteRepo.findByEmail(email);
 		if (cliente == null) {
-			throw new ObjectNotFoudException("Email não encontrado");
+			throw new ObjectNotFoundException("Email não encontrado");
 		}
 		
 		String newPass = newPassword();

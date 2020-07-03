@@ -20,7 +20,7 @@ import com.mz.lojavirtual.repositories.PagamentoRepository;
 import com.mz.lojavirtual.repositories.PedidoRepository;
 import com.mz.lojavirtual.security.UserDetailsImpl;
 import com.mz.lojavirtual.services.exceptions.AuthorizationException;
-import com.mz.lojavirtual.services.exceptions.ObjectNotFoudException;
+import com.mz.lojavirtual.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class PedidoService {
@@ -48,7 +48,7 @@ public class PedidoService {
 
 	public Pedido find(Integer id) {
 		Optional<Pedido> obj = pedidoRepo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoudException(
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
 	}
 

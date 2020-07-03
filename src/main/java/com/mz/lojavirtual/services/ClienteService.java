@@ -29,7 +29,7 @@ import com.mz.lojavirtual.repositories.EnderecoRepository;
 import com.mz.lojavirtual.security.UserDetailsImpl;
 import com.mz.lojavirtual.services.exceptions.AuthorizationException;
 import com.mz.lojavirtual.services.exceptions.DataIntegrityException;
-import com.mz.lojavirtual.services.exceptions.ObjectNotFoudException;
+import com.mz.lojavirtual.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ClienteService {
@@ -63,7 +63,7 @@ public class ClienteService {
 		}
 		
 		Optional<Cliente> cliente = clienteRepo.findById(id);
-		return cliente.orElseThrow(() -> new ObjectNotFoudException(
+		return cliente.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
 	
@@ -103,7 +103,7 @@ public class ClienteService {
 		
 		Cliente cliente = clienteRepo.findByEmail(email);
 		if (cliente == null) {
-			throw new ObjectNotFoudException(
+			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
 		}
 		return cliente;			

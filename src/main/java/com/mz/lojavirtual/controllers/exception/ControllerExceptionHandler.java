@@ -15,13 +15,13 @@ import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.mz.lojavirtual.services.exceptions.AuthorizationException;
 import com.mz.lojavirtual.services.exceptions.DataIntegrityException;
 import com.mz.lojavirtual.services.exceptions.FileException;
-import com.mz.lojavirtual.services.exceptions.ObjectNotFoudException;
+import com.mz.lojavirtual.services.exceptions.ObjectNotFoundException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
 	
-	@ExceptionHandler(ObjectNotFoudException.class)
-	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoudException e, HttpServletRequest request) {
+	@ExceptionHandler(ObjectNotFoundException.class)
+	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
 		
 		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), "Não encontrado", e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
