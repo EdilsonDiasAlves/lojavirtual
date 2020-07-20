@@ -215,20 +215,26 @@ public class DBService {
 		// Massa de dados para clientes e enderecos
 		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOA_FISICA, passwordEncoder.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("927363323", "938383939"));
-
-		Cliente cli2 = new Cliente(null, "Diego Costa", "diegocosta3322@gmail.com", "75573456067", TipoCliente.PESSOA_FISICA, passwordEncoder.encode("123"));
+		cli1.addPerfil(Perfil.CLIENTE);
+		
+		Cliente cli2 = new Cliente(null, "Diego Costa", "diego@gmail.com", "75573456067", TipoCliente.PESSOA_FISICA, passwordEncoder.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("933224455", "922113344"));
-		cli2.addPerfil(Perfil.ADMIN);
+		cli2.addPerfil(Perfil.CLIENTE);
+		
+		Cliente cli3 = new Cliente(null, "Edilson Moizinho", "edilsondiasalves@outlook.com", "77755511122", TipoCliente.PESSOA_FISICA, passwordEncoder.encode("123"));
+		cli1.getTelefones().addAll(Arrays.asList("931302227"));
+		cli3.addPerfil(Perfil.ADMIN);
 		
 		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
 		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
 		Endereco e3 = new Endereco(null, "Avenida Floriano", "2106", null, "Centro", "28177012", cli2, c2);
+		Endereco e4 = new Endereco(null, "Estrada Lisa", "4100", null, "Zona Sul", "22211112", cli3, c2);
 
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 		cli2.getEnderecos().addAll(Arrays.asList(e3));
 
-		clienteRepo.saveAll(Arrays.asList(cli1, cli2));
-		enderecoRepo.saveAll(Arrays.asList(e1, e2, e3));
+		clienteRepo.saveAll(Arrays.asList(cli1, cli2, cli3));
+		enderecoRepo.saveAll(Arrays.asList(e1, e2, e3, e4));
 
 		// Massa de dados para pedidos e pagamentos
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
