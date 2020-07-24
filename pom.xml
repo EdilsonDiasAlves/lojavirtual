@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.mz</groupId>
 	<artifactId>lojavirtual</artifactId>
-	<version>1.0.0</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>lojavirtual</name>
 	<description>Backend de loja virtual</description>
 
@@ -100,7 +100,6 @@
 	</dependencies>
 
 	<build>
-		<finalName>lojavirtual</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
