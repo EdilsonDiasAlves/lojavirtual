@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +65,12 @@ public class DBService {
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Value("${pwd.adm}")
+	private String admSecret;
+	
+	@Value("${pwd.customer}")
+	private String customerSecret;
 
 	public void initializeLocalDatabase() throws ParseException {
 		// Massa de dados para categorias e produtos
@@ -213,15 +220,15 @@ public class DBService {
 		cidadeRepo.saveAll(Arrays.asList(c1, c2, c3));
 
 		// Massa de dados para clientes e enderecos
-		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOA_FISICA, passwordEncoder.encode("123"));
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOA_FISICA, passwordEncoder.encode(customerSecret));
 		cli1.getTelefones().addAll(Arrays.asList("927363323", "938383939"));
 		cli1.addPerfil(Perfil.CLIENTE);
 		
-		Cliente cli2 = new Cliente(null, "Diego Costa", "diego@gmail.com", "75573456067", TipoCliente.PESSOA_FISICA, passwordEncoder.encode("123"));
+		Cliente cli2 = new Cliente(null, "Diego Costa", "diego@gmail.com", "75573456067", TipoCliente.PESSOA_FISICA, passwordEncoder.encode(customerSecret));
 		cli1.getTelefones().addAll(Arrays.asList("933224455", "922113344"));
 		cli2.addPerfil(Perfil.CLIENTE);
 		
-		Cliente cli3 = new Cliente(null, "Edilson Moizinho", "edilsondiasalves@outlook.com", "77755511122", TipoCliente.PESSOA_FISICA, passwordEncoder.encode("123"));
+		Cliente cli3 = new Cliente(null, "Edilson Moizinho", "edilsondiasalves@outlook.com", "77755511122", TipoCliente.PESSOA_FISICA, passwordEncoder.encode(admSecret));
 		cli1.getTelefones().addAll(Arrays.asList("931302227"));
 		cli3.addPerfil(Perfil.ADMIN);
 		
